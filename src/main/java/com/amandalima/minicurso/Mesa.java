@@ -23,7 +23,7 @@ public class Mesa {
         IntStream.range(0, cadeiras).forEach(index -> {
             int numCadeira = index + 1;
             String ocupacao = "vazia";
-            if(!clientes.isEmpty() && clientes.size() <= cadeiras) {
+            if(!clientes.isEmpty() && clientes.size() > index) {
                 ocupacao = clientes.get(index).getNome();
             }
             info.put(numCadeira, ocupacao);
