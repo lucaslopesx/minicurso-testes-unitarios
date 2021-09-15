@@ -4,15 +4,23 @@ public class Pedido {
 
     private  String prato;
     private  String bebida;
-    private double valorTotal = 0;
+    private double valor = 0;
 
     public Pedido(String prato, String bebida, double valor) {
         this.prato = prato;
         this.bebida = bebida;
-        this.valorTotal = valor;
+        this.valor = valor;
     }
 
-    public double getValorTotal() {
-        return valorTotal;
+    public String getPrato() {
+        return prato;
+    }
+
+    public String getBebida() {
+        return bebida;
+    }
+
+    public double getValor() {
+        return valor;
     }
 }

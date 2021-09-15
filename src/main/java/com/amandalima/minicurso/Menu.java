@@ -2,9 +2,9 @@ package com.amandalima.minicurso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
-import java.util.stream.IntStream;
 
 import static java.lang.System.out;
 
@@ -15,6 +15,7 @@ public class Menu {
 
     public static void menuInicial() {
 
+        out.println("____________________________________________________________________");
         System.out.println("Selecione uma opção");
         System.out.println("1 - Ver mesas");
         System.out.println("2 - Nova mesa");
@@ -41,7 +42,7 @@ public class Menu {
     private static void novoPedido() {
         checaSeExisteMesa();
         Mesa mesa = buscaMesa();
-
+        keyboard.nextLine();
         System.out.print("Qual prato você deseja? ");
         String prato = keyboard.nextLine();
         System.out.print("Deseja alguma bebida? ");
@@ -50,7 +51,7 @@ public class Menu {
         double valorTotal = keyboard.nextDouble();
 
         mesa.addPedido(new Pedido(prato, bebida, valorTotal));
-        voltarOuSair();
+        menuInicial();
     }
 
     private static void checaSeExisteMesa() {
@@ -86,10 +87,11 @@ public class Menu {
     private static void acomodarCliente() {
         checaMesaDisponivel();
         Mesa mesa = buscaMesa();
+        keyboard.nextLine();
         System.out.print("Digite o nome do cliente ");
         String nome = keyboard.nextLine();
         mesa.addCliente(new Cliente(nome));
-        voltarOuSair();
+        menuInicial();
     }
 
     private static void verMesas() {
@@ -97,16 +99,17 @@ public class Menu {
             System.out.println("Nenhuma mesa ocupada");
         }
         mesas.forEach(Menu::infoMesa);
-        voltarOuSair();
+        menuInicial();
     }
 
     private static void infoMesa(Mesa mesa) {
         out.println("Mesa " + mesa.getNumero() );
-        IntStream.range(1, mesa.getCadeiras()).forEach(index -> {
-            String status = (mesa.getClientes().isEmpty() || mesa.getClientes().size() < index) ? "vazia" : mesa.getClientes().get(index + 1).getNome();
-            out.println("Cadeira " + index + " " + status);
+        Map<Integer, String> info = mesa.getOcupacao();
+        info.forEach((numCadeira, ocupacao) -> out.println("Cadeira " + numCadeira + " " + ocupacao));
+        mesa.getPedidos().forEach(pedido -> {
+            out.println("Prato: " + pedido.getPrato() + " | Bebida: " + pedido.getBebida() + " | Valor: R$" + pedido.getValor());
         });
-        out.println("Total consumido em R$: " + mesa.totalConsumido());
+        out.println("Total consumido: R$" + mesa.totalConsumido());
     }
 
     private static void novaMesa() {
@@ -125,26 +128,6 @@ public class Menu {
         mesas.add(mesa);
         infoMesa(mesa);
         menuInicial();
-    }
-
-    private static void voltarOuSair() {
-        System.out.println("Digite S para sair ou V para voltar");
-        String opcao = keyboard.next().toUpperCase();
-
-        switch (opcao) {
-            case "S": {
-                System.exit(0);
-            }
-            case "V": {
-                menuInicial();
-                break;
-            }
-            default: {
-                System.out.println("Opção inválida.");
-                voltarOuSair();
-            }
-        }
-
     }
 }
 

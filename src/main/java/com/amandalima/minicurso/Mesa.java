@@ -1,7 +1,10 @@
 package com.amandalima.minicurso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.IntStream;
 
 public class Mesa {
 
@@ -15,8 +18,17 @@ public class Mesa {
         this.cadeiras = cadeiras;
     }
 
-    public int getCadeiras() {
-        return this.cadeiras;
+    public Map<Integer, String> getOcupacao() {
+        Map<Integer, String> info = new HashMap<>();
+        IntStream.range(0, cadeiras).forEach(index -> {
+            int numCadeira = index + 1;
+            String ocupacao = "vazia";
+            if(!clientes.isEmpty() && clientes.size() <= cadeiras) {
+                ocupacao = clientes.get(index).getNome();
+            }
+            info.put(numCadeira, ocupacao);
+        });
+        return info;
     }
 
     public int getNumero() {
@@ -36,10 +48,10 @@ public class Mesa {
     }
 
     public Double totalConsumido() {
-        return pedidos.stream().mapToDouble(Pedido::getValorTotal).sum();
+        return pedidos.stream().mapToDouble(Pedido::getValor).sum();
     }
 
-    public List<Cliente> getClientes() {
-        return this.clientes;
+    public List<Pedido> getPedidos() {
+        return this.pedidos;
     }
 }
