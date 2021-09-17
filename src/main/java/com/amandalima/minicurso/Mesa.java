@@ -8,12 +8,18 @@ import java.util.stream.IntStream;
 
 public class Mesa {
 
-    private int numero;
+    private Integer numero;
     private int cadeiras;
+
     private List<Cliente> clientes = new ArrayList<>();
     private List<Pedido> pedidos = new ArrayList<>();
 
     public Mesa(int numero, int cadeiras) {
+
+        if(cadeiras == 0){
+            return;
+        }
+
         this.numero = numero;
         this.cadeiras = cadeiras;
     }
@@ -34,7 +40,9 @@ public class Mesa {
     public int getNumero() {
         return numero;
     }
-
+    public int getCadeiras() {
+        return cadeiras;
+    }
     public boolean lotada() {
         return this.cadeiras == clientes.size();
     }
@@ -44,6 +52,9 @@ public class Mesa {
     }
 
     public void addPedido(Pedido pedido) {
+        if (clientes.isEmpty()){
+            return;
+        }
         this.pedidos.add(pedido);
     }
 
